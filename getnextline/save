@@ -1,0 +1,31 @@
+NAME	:= fractol
+CFLAGS	:= -Wextra -Wall -Werror -Wunreachable-code -Ofast
+
+HEADERS	:= fractol.h
+SRCS	:= fractol.c \
+OBJS	:= ${SRCS:.c=.o}
+
+all: MLX $(NAME)
+
+%.o: %.c
+	@$(CC) $(CFLAGS) -o $@ -c $< $(HEADERS) && printf "Compiling: $(notdir $<)"
+
+$(NAME): $(OBJS)
+	@$(CC) $(OBJS) $(HEADERS) -o $(NAME)
+
+MLX:
+	chmod 755 setup_libs.sh
+	sh setup_libs.sh
+
+rmlib:
+	rm -rf lib/MLX42
+
+clean:
+	@rm -rf $(OBJS)
+
+fclean: clean rmlib
+	@rm -rf $(NAME)
+
+re: clean all
+
+.PHONY: all, clean, fclean, re, libmlx
